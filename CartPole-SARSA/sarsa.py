@@ -6,12 +6,12 @@ import matplotlib.pyplot as plt
 import time
 import os
 
-# Q学習によるCartPole
+# sarsaによるCartPole
 # 方策はεグリーディ（εの値はepisode数により低下）を使う
 
 class QTable():
 	def __init__(self,num_action,gamma=0.99,alpha=0.5,num_digitized=6):
-		self._Qtable = np.random.uniform(low=-1,high=1,size=(num_digitized**4,num_action))
+		self._Qtable = np.random.uniform(low=10,high=15,size=(num_digitized**4,num_action))
 		self.gamma = gamma
 		self.alpha = alpha
 
@@ -23,9 +23,9 @@ class QTable():
 			action = np.random.choice(a)
 		return action
 
-	def update_Qtable(self,state,action,reward,next_state):
-		next_maxQ=max(self._Qtable[next_state])
-		self._Qtable[state,action] = (1-self.alpha)*self._Qtable[state,action] + self.alpha*(reward+self.gamma*next_maxQ)
+	def update_Qtable(self,state,action,reward,next_state,next_action):
+		self._Qtable[state,action] = (1-self.alpha)*self._Qtable[state,action] \
+			+ self.alpha*(reward+self.gamma*self._Qtable[next_state,next_action])
 		return self._Qtable
 
 def digitize_state(observation,num_digitized=6):
@@ -37,7 +37,7 @@ def digitize_state(observation,num_digitized=6):
 	wn = np.digitize(w,np.linspace(-2.0,2.0,d+1)[1:-1])
 	return pn + vn*d**1 + an*d**2 + wn*d**3
 
-def reward_plot(data,mode,name="ql"):
+def reward_ploter(data,mode,name="sarsa"):
 	path = os.path.join(".","images",name+".png")
 	# mode == 0 で全描画
 	# それ以外の時はmodeずつの平均にして描画
@@ -71,13 +71,14 @@ def main():
 	RENDER_MODE = 0 # 1で定期的に学習の状況を描画する
 	PLOT_MODE = 1 # 1で学習してきたエピソードの報酬をpng画像にする
 	MOVIE_MODE = 1 # 1で学習後にQ方策にて一度プレイしそれを動画として保存する
+	SEED = 42 # 乱数のシードの設定
 
 	NUM_EPISODES = 3000 # 総エピソード回数
-	MAX_NUMBER_OF_STEPS = 500 # 各エピソードの最大行動数 CartPole-v1では最大500ステップとなる
+	MAX_NUMBER_OF_STEPS = 500 # 各エピソードの行動数
 
-	GAMMA = 0.99 # 減衰率
-	ALPHA = 0.5 # 学習率
-	NUM_DIGITIZED = 8 # 分割数
+	GAMMA = 0.999 # 減衰率
+	ALPHA = 0.05 # 学習率
+	NUM_DIGITIZED = 8
 
 	#乱数のシード
 	SEED = 42 # 乱数のシードの設定
@@ -90,21 +91,24 @@ def main():
 	for episode in range(NUM_EPISODES+1):
 		obs = env.reset()
 		state = digitize_state(obs,NUM_DIGITIZED)
+		action = tab.get_action(state,epsilon=0.5)
 		episode_reward = 0
 
 		for t in range(MAX_NUMBER_OF_STEPS):
-			action = tab.get_action(state,epsilon=0.5*(1/(episode+1))) # 部分的にオフポリシー
-			# action = tab.get_action(state,epsilon=0) # オンポリシー
-			# action = tab.get_action(state,epsilon=1) # 完全オフポリシー
-			obs,reward,done,ifo = env.step(action)
+			obs,reward,done,info = env.step(action)
+
+			next_state = digitize_state(obs,NUM_DIGITIZED)
+			next_action = tab.get_action(state,epsilon=0.5*(1/(episode+1)))
+
 			if RENDER_MODE:
 				if episode%10 == 0:
 					env.render()
 			if done and t < MAX_NUMBER_OF_STEPS-1:
 				reward -= MAX_NUMBER_OF_STEPS
-			next_state = digitize_state(obs,NUM_DIGITIZED)
-			q_table = tab.update_Qtable(state,action,reward,next_state)
+
+			q_table = tab.update_Qtable(state,action,reward,next_state,next_action)
 			state = next_state
+			action = next_action
 			episode_reward += reward
 			if episode_reward == 500:
 				true_total_reward = episode_reward
@@ -115,10 +119,10 @@ def main():
 		print(f'Episode:{episode:4.0f}, ER:{true_total_reward:4.0f}')
 		y.append(true_total_reward)
 
-	if PLOT_MODE:reward_plot(y,0)
+	if PLOT_MODE:reward_ploter(y,0)
 	# 最後に学習後の最適プレイを１回動画にする
 	if MOVIE_MODE:
-		vid = wrappers.monitoring.video_recorder.VideoRecorder(env,path="./movies/ql.mp4")
+		vid = wrappers.monitoring.video_recorder.VideoRecorder(env,path="./movies/sarsa.mp4")
 		obs = env.reset()
 		state = digitize_state(obs,NUM_DIGITIZED)
 		for t in range(MAX_NUMBER_OF_STEPS):
