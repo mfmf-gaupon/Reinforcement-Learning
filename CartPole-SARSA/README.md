@@ -18,6 +18,6 @@ open ai gymの0.18.0のバージョンだと、Monitorにて動画が上手く�
 % python sarsa.py
 ```
 
-#### 参考コード
+#### 参考コード,書籍など
 ベースはQ学習である  
 [シンプルな実装例で学ぶSARSA法およびモンテカルロ法](https://qiita.com/sugulu_Ogawa_ISID/items/7a14117bbd3d926eb1f2)
