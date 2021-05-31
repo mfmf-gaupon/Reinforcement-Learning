@@ -1,9 +1,7 @@
-# SARSAによるCartPole
+# モンテカルロ法によるCartPole
 
-TD制御アルゴリズムによるSARSAによりCartPole課題を解く  
-環境はOpenAi gymから"CartPole-v1"を使用する
-
-SARSAは方策オンのアルゴリズムである。
+モンテカルロ法によりCartPole課題を解く
+環境はOpen AI Gymから"CartPole-v1"を使用する
 
 ### 動作環境
 - macOS Big Sur 11.2.3
@@ -15,9 +13,9 @@ open ai gymの0.18.0のバージョンだと、Monitorにて動画が上手く�
 
 ### 使用法
 ```zsh:
-% python sarsa.py
+% python montecarlo.py
 ```
 
 #### 参考コード
-ベースはQ学習である  
+ベースはQ学習である
 [シンプルな実装例で学ぶSARSA法およびモンテカルロ法](https://qiita.com/sugulu_Ogawa_ISID/items/7a14117bbd3d926eb1f2)

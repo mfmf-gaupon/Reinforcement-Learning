@@ -1,7 +1,7 @@
 # Q学習によるCartPole
 
 TD制御アルゴリズムによるQ学習によりCartPole課題を解く  
-環境はOpenAi gymから"CartPole-v1"を使用する
+環境はOpen AI Gymから"CartPole-v1"を使用する
 
 なおこのコードは完全方策オフでなく部分的な方策オフである。
 (行動を選ぶのにεグリーディ法を使っているため)
