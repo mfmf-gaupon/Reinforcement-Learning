@@ -8,8 +8,6 @@
 - python 3.7.10
 - gym 0.17.3
 
-環境メモ  
-open ai gymの0.18.0のバージョンだと、Monitorにて動画が上手く保存できない
 
 ### 使用法
 ```zsh:
@@ -17,5 +15,5 @@ open ai gymの0.18.0のバージョンだと、Monitorにて動画が上手く�
 ```
 
 #### 参考コード,書籍など
-ベースはQ学習である
+ベースはQ学習である  
 [シンプルな実装例で学ぶSARSA法およびモンテカルロ法](https://qiita.com/sugulu_Ogawa_ISID/items/7a14117bbd3d926eb1f2)
