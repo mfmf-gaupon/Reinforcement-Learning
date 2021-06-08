@@ -5,7 +5,7 @@ CartPole課題を解く
 環境はOpen AI Gymから"CartPole-v1"を使用する
 
 ### 動作環境
-- Window10
+- Windows10
 - python 3.6.10
 - gym 0.17.1
 - tensorflow 2.4.1
