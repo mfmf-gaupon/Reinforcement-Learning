@@ -1,11 +1,12 @@
+from collections import deque
+import os
+import time
 import gym
 from gym import wrappers
-import numpy as np
 import matplotlib.pyplot as plt
-from collections import deque
+import numpy as np
 
-import time
-import os
+from utils import reward_plotter
 
 # モンテカルロ法によるCartPole
 # 方策はεグリーディ（εの値はepisode数により低下）を使う
@@ -56,34 +57,6 @@ def digitize_state(observation,num_digitized=6):
 	wn = np.digitize(w,np.linspace(-2.0,2.0,d+1)[1:-1])
 	return pn + vn*d**1 + an*d**2 + wn*d**3
 
-def reward_ploter(data,mode,name="montecarlo"):
-	path = os.path.join(".","images",name+".png")
-	# mode == 0 で全描画
-	# それ以外の時はmodeずつの平均にして描画
-	if mode == 0:
-		x = np.array(range(0,len(data)))
-		y = np.array(data)
-
-		plt.plot(x,y)
-	else:
-		cnt = 0
-		y = []
-		tmp = []
-		for a in data:
-			cnt += 1
-			tmp.append(a)
-			if cnt==mode:
-				y.append(sum(tmp)/len(tmp))
-				tmp=[]
-				cnt=0
-		if len(tmp) != 0:y.append(sum(tmp)/len(tmp))
-		plt.plot(y)
-
-	if mode != 0:
-		plt.xlabel("{} times average".format(mode))
-	plt.savefig(path)
-
-
 def main():
 	# ハイパーパラメータとか
 	ENV_NAME = "CartPole-v1"
@@ -96,7 +69,7 @@ def main():
 
 	GAMMA = 0.99 # 減衰率
 	ALPHA = 0.1 # 学習率
-	NUM_DIGITIZED = 8 # 分割数
+	NUM_DIGITIZED = 4 # 分割数
 
 	MEMORY_SIZE = 1000
 	memory = Memory(max_size=MEMORY_SIZE)
@@ -139,7 +112,7 @@ def main():
 		print(f'Episode:{episode:4.0f}, ER:{true_total_reward:4.0f}')
 		y.append(true_total_reward)
 
-	if PLOT_MODE:reward_ploter(y,0)
+	if PLOT_MODE:reward_plotter(y,30)
 	# 最後に学習後の最適プレイを１回動画にする
 	if MOVIE_MODE:
 		vid = wrappers.monitoring.video_recorder.VideoRecorder(env,path="./movies/montecarlo.mp4")
