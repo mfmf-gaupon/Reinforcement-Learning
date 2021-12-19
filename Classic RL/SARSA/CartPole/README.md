@@ -10,12 +10,6 @@ SARSAは方策オンのアルゴリズムである。
 - python 3.7.10
 - gym 0.17.3
 
-
-### 使用法
-```zsh:
-% python sarsa.py
-```
-
 #### 参考コード,書籍など
 ベースはQ学習である  
 [シンプルな実装例で学ぶSARSA法およびモンテカルロ法](https://qiita.com/sugulu_Ogawa_ISID/items/7a14117bbd3d926eb1f2)
