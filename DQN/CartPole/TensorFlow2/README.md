@@ -8,7 +8,6 @@ TenseorFlow2(とKeras)でDQNを実装しCartPole課題を解く
 - python 3.6.10
 - gym 0.17.1
 - tensorflow 2.4.1
-- tf-agents 0.7.1
 
 ### 使用法
 ```zsh:
