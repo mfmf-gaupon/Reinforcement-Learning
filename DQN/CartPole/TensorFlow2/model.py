@@ -12,7 +12,7 @@ class QNetwork(keras.Model):
         self.out    = keras.layers.Dense(self.action_space,kernel_initializer="he_normal")
 
         #optimizer
-        self.optimizer = keras.optimizers.Adam(learning_rate=4e-4,epsilon=1e-7)
+        self.optimizer = keras.optimizers.Adam(learning_rate=4e-4)
 
     #@tf.function
     def call(self,x):

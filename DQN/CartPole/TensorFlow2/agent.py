@@ -20,7 +20,7 @@ class DQNAgent:
         self.max_experiences = int(2e5)
         self.min_experiences = 512
         self.batch_size      = 16
-        self.gamma           = 0.95
+        self.gamma           = 0.96
         self.update_period   = 2
         self.target_update_period = 500
         self.action_space    = self.env.action_space.n
