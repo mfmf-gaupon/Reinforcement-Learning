@@ -22,9 +22,9 @@ class DQNAgent:
         self.batch_size      = 16
         self.gamma           = 0.95
         self.update_period   = 2
-        self.target_update_period = 250
+        self.target_update_period = 500
         self.action_space    = self.env.action_space.n
-        self.num_actions     = 1 # Discreteなので1
+        self.num_actions     = 1
         self.state_shape     = self.env.observation_space.shape
         self.q               = QNetwork(self.action_space)
         self.target_q        = QNetwork(self.action_space)
