@@ -4,13 +4,12 @@ TenseorFlow2(とKeras)でDQNを実装しCartPole課題を解く
 環境はOpen AI Gymから"CartPole-v1"を使用する
 
 ### 動作環境
-- Windows10
 - python 3.6.10
 - gym 0.17.1
 - tensorflow 2.4.1
 
 ## ハイパーパラメータとか
-### バックボーン
+### モデル周り
 - 2層MLP
     - 隠れ層のユニット数 : 100
     - 活性化関数 : tanh
